@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: concurrent-csv-processing
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/csv_processing_db
+    username: postgres
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 50
+        order_inserts: true
+        generate_statistics: true
+        format_sql: true
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 50MB
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+server:
+  port: 8080
+
+logging:
+  level:
+    root: INFO
+    com.assignment.csvprocessing: DEBUG
+  pattern:
+    console: "%d{HH:mm:ss} [%thread] %-5level %logger - %msg%n"
